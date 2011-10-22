@@ -16,7 +16,7 @@ self._key_ = (_value_); \
 
 @interface SeriouslyOperation (Private)
 
-- (id)initWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler;
+- (id)initWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler format:(NSString *)format;
 - (id)parsedData;
 
 @end
@@ -32,6 +32,7 @@ self._key_ = (_value_); \
     [_connection release];
     [_handler release];
     [_progressHandler release];
+    [_format release];
     [_response release];
     [_data release];
     [_error release];
@@ -40,16 +41,17 @@ self._key_ = (_value_); \
     [super dealloc];
 }
 
-+ (id)operationWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler {
++ (id)operationWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler  format:(NSString *)format {
     // Don't you dare release this until everything is finished or canceled
-    return [[self alloc] initWithRequest:urlRequest handler:handler progressHandler:progressHandler];
+    return [[self alloc] initWithRequest:urlRequest handler:handler progressHandler:progressHandler format:format];
 }
 
-- (id)initWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler {
+- (id)initWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler format:(NSString *)format {
     self = [super init];
     //_connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self startImmediately:NO];
     _handler = [handler copy];
     _progressHandler = [progressHandler copy];
+    _format = [format copy];
     _data = [[NSMutableData alloc] init];
     
     _isFinished = NO;
@@ -104,7 +106,12 @@ self._key_ = (_value_); \
 }
 
 - (id)parsedData {
-    NSString *contentType = [[_response allHeaderFields] objectForKey:@"Content-Type"];
+    NSString *contentType;
+    if (_format == @"json") {
+        contentType = @"application/json";
+    } else {
+        contentType = [[_response allHeaderFields] objectForKey:@"Content-Type"];
+    }
 
     if ([contentType hasPrefix:@"application/json"] ||
         [contentType hasPrefix:@"text/json"] ||

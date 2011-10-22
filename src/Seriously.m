@@ -14,6 +14,7 @@ const NSString *kSeriouslyTimeout = @"kSeriouslyTimeout";
 const NSString *kSeriouslyHeaders = @"kSeriouslyHeaders";
 const NSString *kSeriouslyBody = @"kSeriouslyBody";
 const NSString *kSeriouslyProgressHandler = @"kSeriouslyProgressHandler";
+const NSString *kSeriouslyFormat = @"kSeriouslyFormat";
 
 @implementation Seriously
 
@@ -37,8 +38,9 @@ const NSString *kSeriouslyProgressHandler = @"kSeriouslyProgressHandler";
     NSLog(@"(%@) %@", [request HTTPMethod], [request URL]);
     
     SeriouslyProgressHandler progressHandler = [options objectForKey:kSeriouslyProgressHandler];
+    NSString *format = [options objectForKey:kSeriouslyFormat];
     
-    SeriouslyOperation *operation = [SeriouslyOperation operationWithRequest:request handler:handler progressHandler:progressHandler];
+    SeriouslyOperation *operation = [SeriouslyOperation operationWithRequest:request handler:handler progressHandler:progressHandler format:format];
     [[self operationQueue] addOperation:operation];
 
     return operation;

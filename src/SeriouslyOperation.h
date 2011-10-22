@@ -13,6 +13,7 @@
     NSURLConnection *_connection;
     SeriouslyHandler _handler;
     SeriouslyProgressHandler _progressHandler;
+    NSString *_format;
     NSMutableData *_data;
     NSHTTPURLResponse *_response;
     NSError *_error;
@@ -28,6 +29,6 @@
 @property () BOOL isExecuting;
 @property () BOOL isCanceled;
 
-+ (id)operationWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler;
++ (id)operationWithRequest:(NSURLRequest *)urlRequest handler:(SeriouslyHandler)handler progressHandler:(SeriouslyProgressHandler)progressHandler format:(NSString *)format;
 
 @end
