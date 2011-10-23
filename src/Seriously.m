@@ -131,8 +131,9 @@ const NSString *kSeriouslyFormat = @"kSeriouslyFormat";
     if (!params) {
         return [url isKindOfClass:[NSString string]] ? [NSURL URLWithString:url] : url;
     }
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@?%@", url, [self formatQueryParams:params]];    
+
+    NSString *baseString = [url isKindOfClass:[NSURL class]] ? [url absoluteString] : url;
+    NSString *urlString = [NSString stringWithFormat:@"%@?%@", baseString, [self formatQueryParams:params]];    
     
     NSLog(@"GOT IT %@", urlString);
     return [NSURL URLWithString:urlString];    
