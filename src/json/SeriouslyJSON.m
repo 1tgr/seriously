@@ -162,7 +162,7 @@ static yajl_callbacks callbacks = {
         yajl_free_error(hand, error);
         yajl_bs_free(state);
         yajl_free(hand);
-        [NSException raise:@"Seriously Error" format:@"Problem parsing JSON data %s", error];
+        [NSException raise:@"Seriously Error" format:@"Problem parsing JSON data %s", buffer];
     }
     else {
         yajl_bs_free(state);

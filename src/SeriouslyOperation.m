@@ -113,29 +113,29 @@ self._key_ = (_value_); \
         contentType = [[_response allHeaderFields] objectForKey:@"Content-Type"];
     }
 
-    if ([contentType hasPrefix:@"application/json"] ||
-        [contentType hasPrefix:@"text/json"] ||
-        [contentType hasPrefix:@"application/javascript"] ||
-        [contentType hasPrefix:@"text/javascript"]) {
-        
-        NSString *text = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];
-        id result = [SeriouslyJSON parse:text];
-        [text release];
-     
-        return result;
+    if (_error == nil) {
+        if ([contentType hasPrefix:@"application/json"] ||
+            [contentType hasPrefix:@"text/json"] ||
+            [contentType hasPrefix:@"application/javascript"] ||
+            [contentType hasPrefix:@"text/javascript"]) {
+
+            NSString *text = [[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding];
+            id result = [SeriouslyJSON parse:text];
+            [text release];
+             
+            return result;
+        }
     }
-    else if ([contentType hasPrefix:@"image/"] ||
-                 [contentType hasPrefix:@"audio/"] ||
-                 [contentType hasPrefix:@"application/octet-stream"]) {
+
+    if ([contentType hasPrefix:@"image/"] ||
+        [contentType hasPrefix:@"audio/"] ||
+        [contentType hasPrefix:@"application/octet-stream"]) {
 
         return _data;
-    }
-    else {
+    } else {
         NSString *text = [[[NSString alloc] initWithData:_data encoding:NSUTF8StringEncoding] autorelease];
         return text;
     }
-
-        
 }
 
 // NSURLConnection Delegate
