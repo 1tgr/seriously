@@ -109,6 +109,8 @@ self._key_ = (_value_); \
     NSString *contentType;
     if (_format == @"json") {
         contentType = @"application/json";
+    } else if (_format == @"text") {
+        contentType = @"text/plain";
     } else {
         contentType = [[_response allHeaderFields] objectForKey:@"Content-Type"];
     }
